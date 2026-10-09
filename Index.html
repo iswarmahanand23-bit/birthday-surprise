@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Surprise 🎂</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 20px 12px 40px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      color: #493044;
+      background: linear-gradient(135deg, #ffe0ec, #fff4d8, #e4f8ff);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      color: #f04478;
+      font-size: clamp(27px, 6vw, 40px);
+    }
+
+    .subtitle {
+      color: #76556b;
+      line-height: 1.6;
+    }
+
+    .balloons {
+      font-size: 35px;
+      animation: float 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-12px); }
+    }
+
+    .form-box, .card {
+      width: 100%;
+      max-width: 480px;
+      margin: 22px auto;
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 8px 28px #b87b9b30;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 15px 0 7px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e5b8cc;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+    }
+
+    button {
+      border: none;
+      border-radius: 25px;
+      padding: 13px 19px;
+      margin: 8px 4px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #f04478;
+      color: white;
+    }
+
+    button:hover {
+      background: #d92e64;
+    }
+
+    .secondary {
+      background: #8055a5;
+    }
+
+    .card {
+      display: none;
+      border: 3px dashed #ffc0d4;
+    }
+
+    .card h2 {
+      color: #f04478;
+      font-size: 30px;
+    }
+
+    .photo {
+      display: none;
+      width: 100%;
+      max-height: 340px;
+      object-fit: contain;
+      border-radius: 16px;
+      margin: 15px auto;
+      background: #fff4f8;
+    }
+
+    .cake {
+      font-size: 75px;
+      margin: 15px 0;
+      animation: float 1.5s ease-in-out infinite alternate;
+    }
+
+    .wish {
+      font-size: 17px;
+      line-height: 1.8;
+      overflow-wrap: anywhere;
+    }
+
+    .signature {
+      margin-top: 25px;
+      color: #e43c75;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      z-index: 5;
+      pointer-events: none;
+      animation: fall 3.5s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      #birthdayCard, #birthdayCard * {
+        visibility: visible;
+      }
+
+      #birthdayCard {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        border: 2px dashed #f04478;
+        box-shadow: none;
+        background: white;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="no-print">
+    <div class="balloons">🎈 🎉 🎈</div>
+
+    <h1>Birthday Surprise 🎂</h1>
+
+    <p class="subtitle">
+      A little surprise made with love ❤️<br>
+      Fill in your details to reveal your birthday wish!
+    </p>
+
+    <div class="form-box">
+      <h2>🎁 Open Your Surprise</h2>
+
+      <form id="birthdayForm">
+        <label for="friendName">Your Name</label>
+        <input
+          type="text"
+          id="friendName"
+          placeholder="Enter your name"
+          maxlength="60"
+          required
+        >
+
+        <label for="dob">Your Date of Birth</label>
+        <input type="date" id="dob" required>
+
+        <label for="friendPhoto">Upload Your Photo (Optional)</label>
+        <input
+          type="file"
+          id="friendPhoto"
+          accept="image/*"
+        >
+
+        <label for="senderName">Wish From</label>
+        <input
+          type="text"
+          id="senderName"
+          placeholder="Your friend's name"
+          value="Your Friend"
+          maxlength="60"
+          required
+        >
+
+        <button type="submit">Open My Surprise 💖</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" id="birthdayCard">
+    <div class="balloons">🎈 🎊 🎈</div>
+
+    <h2>Happy Birthday!</h2>
+
+    <p id="greeting"></p>
+
+    <img id="previewPhoto" class="photo" alt="Birthday friend's photo">
+
+    <div class="cake">🎂</div>
+
+    <h2 id="birthdayName"></h2>
+
+    <p id="ageText"></p>
+
+    <div class="wish">
+      May your special day be filled with happiness,
+      laughter, love and beautiful memories. 💖
+
+      <br><br>
+
+      May all your dreams come true, may you always
+      keep smiling, and may this new year of your life
+      bring you success and endless joy. ✨
+
+      <br><br>
+
+      You are a wonderful friend. Stay happy,
+      stay blessed, and keep shining! 🥳
+    </div>
+
+    <div class="cake">🎁</div>
+
+    <p class="signature">
+      With lots of love ❤️<br>
+      From <span id="signatureName"></span>
+    </p>
+
+    <p>🎉 Have an amazing birthday! 🎉</p>
+  </div>
+
+  <div class="no-print" id="cardActions" style="display:none">
+    <button onclick="window.print()">Save / Print as PDF 📄</button>
+    <button class="secondary" onclick="shareWish()">Share Wish 🔗</button>
+    <br>
+    <button class="secondary" onclick="location.reload()">Make Another Card ↻</button>
+    <p class="subtitle">
+      PDF ke liye print window mein "Save as PDF" select karo.
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById("birthdayForm");
+    const dobInput = document.getElementById("dob");
+    const photoInput = document.getElementById("friendPhoto");
+
+    // Future date select karne se rokna
+    const today = new Date();
+    const localToday = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0")
+    ].join("-");
+
+    dobInput.max = localToday;
+
+    let photoData = "";
+
+    // Photo ko browser mein hi load karna
+    photoInput.addEventListener("change", function () {
+      const file = this.files[0];
+      photoData = "";
+
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file.");
+        this.value = "";
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Please choose a photo smaller than 5 MB.");
+        this.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        photoData = event.target.result;
+      };
+
+      reader.onerror = function () {
+        alert("Photo could not be loaded. Please try again.");
+        photoInput.value = "";
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    function calculateAge(dateString) {
+      const parts = dateString.split("-").map(Number);
+      const birthYear = parts[0];
+      const birthMonth = parts[1];
+      const birthDay = parts[2];
+
+      const now = new Date();
+      let age = now.getFullYear() - birthYear;
+
+      const birthdayNotReached =
+        now.getMonth() + 1 < birthMonth ||
+        (now.getMonth() + 1 === birthMonth &&
+         now.getDate() < birthDay);
+
+      if (birthdayNotReached) {
+        age--;
+      }
+
+      return age;
+    }
+
+    function makeConfetti() {
+      const symbols = ["🎉", "💖", "✨", "🎊", "🌸"];
+
+      for (let i = 0; i < 35; i++) {
+        const piece = document.createElement("span");
+        piece.className = "confetti";
+        piece.textContent =
+          symbols[Math.floor(Math.random() * symbols.length)];
+
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.animationDelay = Math.random() * 2 + "s";
+        piece.style.fontSize = (16 + Math.random() * 16) + "px";
+
+        document.body.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 6000);
+      }
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("friendName").value.trim();
+      const dob = dobInput.value;
+      const sender = document.getElementById("senderName").value.trim();
+
+      if (!name || !dob || !sender) {
+        alert("Please fill in all required details.");
+        return;
+      }
+
+      if (dob > localToday) {
+        alert("Please enter a valid date of birth.");
+        return;
+      }
+
+      document.getElementById("greeting").textContent =
+        "Dear " + name + ", today is all about YOU! 💕";
+
+      document.getElementById("birthdayName").textContent =
+        name + " 🎂";
+
+      document.getElementById("ageText").textContent =
+        "Age: " + calculateAge(dob) + " years";
+
+      document.getElementById("signatureName").textContent = sender;
+
+      const image = document.getElementById("previewPhoto");
+
+      if (photoData) {
+        image.src = photoData;
+        image.style.display = "block";
+      } else {
+        image.removeAttribute("src");
+        image.style.display = "none";
+      }
+
+      document.getElementById("birthdayCard").style.display = "block";
+      document.getElementById("cardActions").style.display = "block";
+
+      document.getElementById("birthdayCard").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+      makeConfetti();
+    });
+
+    async function shareWish() {
+      const name = document.getElementById("friendName").value.trim();
+      const sender = document.getElementById("senderName").value.trim();
+
+      const message =
+        "🎂 Happy Birthday, " + name + "! 💖\n\n" +
+        "May your life be full of happiness, success and beautiful memories!\n\n" +
+        "With love, " + sender + " ❤️";
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: "Birthday Surprise 🎂",
+            text: message
+          });
+        } catch (error) {
+          // User cancelled sharing
+        }
+      } else {
+        try {
+          await navigator.clipboard.writeText(message);
+          alert("Birthday wish copied! Ab WhatsApp par paste kar do.");
+        } catch (error) {
+          alert(message);
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
